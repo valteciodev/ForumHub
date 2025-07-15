@@ -1,8 +1,7 @@
 package Alura.ForumHub.domain.usuario;
 
 import Alura.ForumHub.domain.perfil.Perfil;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String email;
     private String senha;
+
+    @ManyToOne
+    @JoinColumn(name = "perfil_id", nullable = false)
     private Perfil perfil;
 
 }

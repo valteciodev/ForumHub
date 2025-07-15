@@ -21,4 +21,22 @@
         @Enumerated(EnumType.STRING)
         private Categoria categoria;
 
+        private boolean ativo;
+
+        public Curso(CursoDTO dados) {
+            this(null, dados.nome(), dados.categoria(), true);
+        }
+
+        public void atualizarInformacoes(CursoAtualizarDTO dados) {
+            if (dados.nome() != null) {
+                this.nome = dados.nome();
+            }
+            if (dados.categoria() != null) {
+                this.categoria = dados.categoria();
+            }
+        }
+
+        public void excluir() {
+            this.ativo = false;
+        }
     }
