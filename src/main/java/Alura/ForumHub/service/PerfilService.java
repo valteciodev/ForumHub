@@ -15,7 +15,7 @@ public class PerfilService {
 
     private PerfilRepository perfilRepository;
 
-    public Object cadastrar(PerfilDTO dados) {
+    public PerfilDetalhadoDTO cadastrar(PerfilDTO dados) {
         var perfil = new Perfil(dados);
         perfilRepository.save(perfil);
         return new PerfilDetalhadoDTO(perfil);
@@ -36,7 +36,7 @@ public class PerfilService {
         return new PerfilDetalhadoDTO(perfil);
     }
 
-    public Object atualizar(PerfilAtualizarDTO dados) {
+    public PerfilDetalhadoDTO atualizar(PerfilAtualizarDTO dados) {
         var perfil = perfilRepository.findById(dados.id())
                 .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
         perfil.atualizarInformacoes(dados);

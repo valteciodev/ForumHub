@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/perfis")
@@ -17,9 +18,12 @@ public class PerfilController {
     private PerfilService perfilService;
 
     @PostMapping
-    public ResponseEntity cadastrar (PerfilDTO dados) {
+    public ResponseEntity cadastrar (PerfilDTO dados, UriComponentsBuilder uriBuilder) {
         var dto = perfilService.cadastrar(dados);
-        return ResponseEntity.ok(dto);
+        var uri = uriBuilder.path("/perfis/{id}").buildAndExpand(dto.id()).toUri();
+
+        // Retorna o status 201 Created com o local do novo recurso no cabeçalho Location
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @GetMapping

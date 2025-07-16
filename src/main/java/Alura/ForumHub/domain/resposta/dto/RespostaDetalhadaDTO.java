@@ -1,5 +1,6 @@
 package Alura.ForumHub.domain.resposta.dto;
 
+import Alura.ForumHub.domain.resposta.Resposta;
 import Alura.ForumHub.domain.topico.dto.TopicoDetalhadoDTO;
 import Alura.ForumHub.domain.usuario.dto.UsuarioDetalhadoDTO;
 
@@ -10,7 +11,18 @@ public record RespostaDetalhadaDTO (
         String mensagem,
         Date dataCriacao,
         boolean solucao,
-        TopicoDetalhadoDTO topico,
+        Long topico_id,
         UsuarioDetalhadoDTO autor
         ) {
+        public RespostaDetalhadaDTO(Resposta dados) {
+            this(
+                    dados.getId(),
+                    dados.getMensagem(),
+                    dados.getDataCriacao(),
+                    dados.isSolucao(),
+                    dados.getTopico().getId(),
+                    new UsuarioDetalhadoDTO(dados.getAutor())
+            );
+
+        }
 }

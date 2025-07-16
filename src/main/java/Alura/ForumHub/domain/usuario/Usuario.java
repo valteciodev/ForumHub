@@ -19,6 +19,7 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    private boolean ativo;
 
     @ManyToOne
     @JoinColumn(name = "perfil_id", nullable = false)

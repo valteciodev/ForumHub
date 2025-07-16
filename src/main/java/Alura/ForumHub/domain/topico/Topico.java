@@ -2,13 +2,14 @@ package Alura.ForumHub.domain.topico;
 
 import Alura.ForumHub.domain.curso.Curso;
 import Alura.ForumHub.domain.resposta.Resposta;
+import Alura.ForumHub.domain.topico.dto.TopicoDTO;
 import Alura.ForumHub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name="Topico")
@@ -27,7 +28,7 @@ public class Topico {
     private String mensagem;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dataCriacao;
+    private LocalDateTime dataCriacao;
 
     private boolean status;
 
@@ -42,4 +43,14 @@ public class Topico {
     @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Resposta> respostas;
 
+    private boolean ativo;
+
+    public Topico(TopicoDTO dados, Usuario usuario, Curso curso) {
+        this.titulo = dados.titulo();
+        this.mensagem = dados.mensagem();
+        this.dataCriacao = LocalDateTime.now();
+        this.status = true; // Por padrão, o tópico é criado com status 'true'
+        this.autor = usuario;
+        this.curso = curso;
+    }
 }

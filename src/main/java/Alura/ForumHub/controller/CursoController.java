@@ -9,20 +9,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/cursos")
-public class CursosController {
+public class CursoController {
 
     @Autowired
     private CursoService cursoService;
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody CursoDTO dados) {
+    public ResponseEntity cadastrar(@RequestBody CursoDTO dados, UriComponentsBuilder uriBuilder) {
         var dto = cursoService.cadastrar(dados);
+        var uri = uriBuilder.path("/cursos/{id}").buildAndExpand(dto.id()).toUri();
 
-        return ResponseEntity.ok(dto);
+        // Retorna o status 201 Created com o local do novo recurso no cabeçalho Location
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @GetMapping
