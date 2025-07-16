@@ -32,7 +32,7 @@ public class PerfilController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity detalhar(Long id) {
+    public ResponseEntity detalhar(@PathVariable Long id) {
         return ResponseEntity.ok(perfilService.detalhar(id));
     }
 

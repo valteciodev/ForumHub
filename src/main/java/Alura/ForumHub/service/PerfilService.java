@@ -6,6 +6,7 @@ import Alura.ForumHub.domain.perfil.dto.PerfilDTO;
 import Alura.ForumHub.domain.perfil.dto.PerfilDetalhadoDTO;
 import Alura.ForumHub.repository.PerfilRepository;
 import Alura.ForumHub.service.exception.ValidacaoException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PerfilService {
 
+    @Autowired
     private PerfilRepository perfilRepository;
 
     public PerfilDetalhadoDTO cadastrar(PerfilDTO dados) {
@@ -24,6 +26,9 @@ public class PerfilService {
     public Page<PerfilDetalhadoDTO> listar(Pageable paginacao) {
         var perfis = perfilRepository.findAllByAtivoTrue(paginacao)
                 .map(PerfilDetalhadoDTO::new);
+        if (perfis.isEmpty()) {
+            throw new ValidacaoException("Nenhum perfil encontrado");
+        }
         return perfis;
     }
 
