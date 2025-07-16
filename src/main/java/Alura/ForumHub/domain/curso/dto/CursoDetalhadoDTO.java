@@ -1,4 +1,7 @@
-package Alura.ForumHub.domain.curso;
+package Alura.ForumHub.domain.curso.dto;
+
+import Alura.ForumHub.domain.curso.Categoria;
+import Alura.ForumHub.domain.curso.Curso;
 
 public record CursoDetalhadoDTO(
         Long id,

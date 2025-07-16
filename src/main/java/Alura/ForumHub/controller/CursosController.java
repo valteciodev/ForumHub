@@ -1,7 +1,7 @@
 package Alura.ForumHub.controller;
 
-import Alura.ForumHub.domain.curso.CursoAtualizarDTO;
-import Alura.ForumHub.domain.curso.CursoDTO;
+import Alura.ForumHub.domain.curso.dto.CursoAtualizarDTO;
+import Alura.ForumHub.domain.curso.dto.CursoDTO;
 import Alura.ForumHub.service.CursoService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

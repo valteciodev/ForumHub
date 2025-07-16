@@ -1,7 +1,7 @@
 package Alura.ForumHub.controller;
 
-import Alura.ForumHub.domain.perfil.PerfilAtualizarDTO;
-import Alura.ForumHub.domain.perfil.PerfilDTO;
+import Alura.ForumHub.domain.perfil.dto.PerfilAtualizarDTO;
+import Alura.ForumHub.domain.perfil.dto.PerfilDTO;
 import Alura.ForumHub.service.PerfilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

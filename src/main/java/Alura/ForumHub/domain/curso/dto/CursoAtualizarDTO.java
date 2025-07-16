@@ -1,5 +1,6 @@
-package Alura.ForumHub.domain.curso;
+package Alura.ForumHub.domain.curso.dto;
 
+import Alura.ForumHub.domain.curso.Categoria;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

@@ -1,5 +1,7 @@
 package Alura.ForumHub.domain.perfil;
 
+import Alura.ForumHub.domain.perfil.dto.PerfilAtualizarDTO;
+import Alura.ForumHub.domain.perfil.dto.PerfilDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,9 +1,9 @@
 package Alura.ForumHub.service;
 
 import Alura.ForumHub.domain.curso.Curso;
-import Alura.ForumHub.domain.curso.CursoAtualizarDTO;
-import Alura.ForumHub.domain.curso.CursoDTO;
-import Alura.ForumHub.domain.curso.CursoDetalhadoDTO;
+import Alura.ForumHub.domain.curso.dto.CursoAtualizarDTO;
+import Alura.ForumHub.domain.curso.dto.CursoDTO;
+import Alura.ForumHub.domain.curso.dto.CursoDetalhadoDTO;
 import Alura.ForumHub.repository.CursoRepository;
 import Alura.ForumHub.service.exception.ValidacaoException;
 import jakarta.validation.Valid;

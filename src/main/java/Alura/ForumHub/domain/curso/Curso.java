@@ -1,5 +1,7 @@
     package Alura.ForumHub.domain.curso;
 
+    import Alura.ForumHub.domain.curso.dto.CursoAtualizarDTO;
+    import Alura.ForumHub.domain.curso.dto.CursoDTO;
     import jakarta.persistence.*;
     import lombok.AllArgsConstructor;
     import lombok.Getter;

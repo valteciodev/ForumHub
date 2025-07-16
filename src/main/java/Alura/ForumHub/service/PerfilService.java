@@ -1,9 +1,9 @@
 package Alura.ForumHub.service;
 
 import Alura.ForumHub.domain.perfil.Perfil;
-import Alura.ForumHub.domain.perfil.PerfilAtualizarDTO;
-import Alura.ForumHub.domain.perfil.PerfilDTO;
-import Alura.ForumHub.domain.perfil.PerfilDetalhadoDTO;
+import Alura.ForumHub.domain.perfil.dto.PerfilAtualizarDTO;
+import Alura.ForumHub.domain.perfil.dto.PerfilDTO;
+import Alura.ForumHub.domain.perfil.dto.PerfilDetalhadoDTO;
 import Alura.ForumHub.repository.PerfilRepository;
 import Alura.ForumHub.service.exception.ValidacaoException;
 import org.springframework.data.domain.Page;

@@ -1,19 +1,18 @@
-package Alura.ForumHub.domain.topico;
+package Alura.ForumHub.domain.resposta.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record TopicoDTO(
-        @NotBlank(message = "O título é obrigatório")
-        String titulo,
-
+public record RespostaDTO(
         @NotBlank(message = "A mensagem é obrigatória")
         String mensagem,
+
+        @NotNull(message = "O ID do tópico é obrigatório")
+        Long topicoId,
 
         @NotNull(message = "O ID do autor é obrigatório")
         Long autorId,
 
-        @NotNull(message = "O ID do curso é obrigatório")
-        Long cursoId
+        boolean solucao
         ) {
 }

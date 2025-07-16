@@ -1,7 +1,7 @@
-package Alura.ForumHub.domain.resposta;
+package Alura.ForumHub.domain.resposta.dto;
 
-import Alura.ForumHub.domain.topico.TopicoDetalhadoDTO;
-import Alura.ForumHub.domain.usuario.UsuarioDetalhadoDTO;
+import Alura.ForumHub.domain.topico.dto.TopicoDetalhadoDTO;
+import Alura.ForumHub.domain.usuario.dto.UsuarioDetalhadoDTO;
 
 import java.util.Date;
 

@@ -1,4 +1,6 @@
-package Alura.ForumHub.domain.perfil;
+package Alura.ForumHub.domain.perfil.dto;
+
+import Alura.ForumHub.domain.perfil.Perfil;
 
 public record PerfilDetalhadoDTO (
         Long id,
