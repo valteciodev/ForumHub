@@ -6,10 +6,10 @@ import Alura.ForumHub.domain.topico.dto.TopicoAtualizarDTO;
 import Alura.ForumHub.domain.topico.dto.TopicoDTO;
 import Alura.ForumHub.domain.topico.dto.TopicoDetalhadoDTO;
 import Alura.ForumHub.domain.usuario.Usuario;
+import Alura.ForumHub.infra.exception.ExceptionUtil;
 import Alura.ForumHub.repository.CursoRepository;
 import Alura.ForumHub.repository.TopicoRepository;
 import Alura.ForumHub.repository.UsuarioRepository;
-import Alura.ForumHub.service.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +32,7 @@ public class TopicoService {
         var curso = validarCurso(dados.cursoId());
 
         if (topicoRepository.existsByTituloIgnoreCase(dados.titulo())) {
-            throw new ValidacaoException("Já existe um tópico com este título");
+            throw ExceptionUtil.badRequest("Já existe um tópico com este título");
         }
 
         var topico = new Topico(dados, usuario, curso);
@@ -45,32 +45,32 @@ public class TopicoService {
         var topicos = topicoRepository.findAllByAtivoTrue(paginacao)
                 .map(TopicoDetalhadoDTO::new);
         if (topicos.isEmpty()) {
-            throw new ValidacaoException("Nenhum tópico encontrado");
+            throw ExceptionUtil.notFound("Nenhum tópico encontrado");
         }
         return topicos;
     }
 
     public TopicoDetalhadoDTO detalhar(Long id) {
         var topico = topicoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tópico não encontrado"));
+                .orElseThrow(() -> ExceptionUtil.notFound("Tópico não encontrado"));
         if (!topico.isAtivo()) {
-            throw new ValidacaoException("Tópico inativo");
+            throw ExceptionUtil.badRequest("Tópico inativo");
         }
         return new TopicoDetalhadoDTO(topico);
     }
 
     public TopicoDetalhadoDTO atualizar(TopicoAtualizarDTO dados) {
         var topico = topicoRepository.findById(dados.id())
-                .orElseThrow(() -> new RuntimeException("Tópico não encontrado"));
+                .orElseThrow(() -> ExceptionUtil.notFound("Tópico não encontrado"));
         if (!topico.isAtivo()) {
-            throw new ValidacaoException("Tópico inativo");
+            throw ExceptionUtil.badRequest("Tópico inativo");
         }
 
         validarUsuario(dados.autorId());
         var curso = validarCurso(dados.cursoId());
 
         if (topicoRepository.existsByTituloIgnoreCaseAndIdNot(dados.titulo(), dados.id())) {
-            throw new ValidacaoException("Já existe um tópico com este título");
+            throw ExceptionUtil.badRequest("Já existe um tópico com este título");
         }
         topico.atualizarInformacoes(dados, curso);
         return new TopicoDetalhadoDTO(topico);
@@ -78,27 +78,27 @@ public class TopicoService {
 
     public void excluir(Long id) {
         var topico = topicoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tópico não encontrado"));
+                .orElseThrow(() -> ExceptionUtil.notFound("Tópico não encontrado"));
         if (!topico.isAtivo()) {
-            throw new ValidacaoException("Tópico já está inativo");
+            throw ExceptionUtil.badRequest("Tópico já está inativo");
         }
         topico.excluir();
     }
 
     private Usuario validarUsuario(Long usuarioId) {
         var usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> ExceptionUtil.notFound("Usuário não encontrado"));
         if (!usuario.isAtivo()) {
-            throw new ValidacaoException("Usuário inativo");
+            throw ExceptionUtil.badRequest("Usuário inativo");
         }
         return usuario;
     }
 
     private Curso validarCurso(Long cursoId) {
         var curso = cursoRepository.findById(cursoId)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+                .orElseThrow(() -> ExceptionUtil.notFound("Curso não encontrado"));
         if (!curso.isAtivo()) {
-            throw new ValidacaoException("Curso inativo");
+            throw ExceptionUtil.badRequest("Curso inativo");
         }
 
         return curso;

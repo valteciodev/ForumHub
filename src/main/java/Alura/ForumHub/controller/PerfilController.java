@@ -30,7 +30,7 @@ public class PerfilController {
 //    }
 
     @GetMapping
-    public ResponseEntity listar(@PageableDefault(size = 10, page = 0, sort = {"nome"}) Pageable paginacao) {
+    public ResponseEntity listar(@PageableDefault(sort = {"nome"}) Pageable paginacao) {
         return ResponseEntity.ok(perfilService.listar(paginacao));
     }
 

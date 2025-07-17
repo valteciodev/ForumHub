@@ -5,7 +5,7 @@ import Alura.ForumHub.domain.perfil.dto.PerfilAtualizarDTO;
 import Alura.ForumHub.domain.perfil.dto.PerfilDTO;
 import Alura.ForumHub.domain.perfil.dto.PerfilDetalhadoDTO;
 import Alura.ForumHub.repository.PerfilRepository;
-import Alura.ForumHub.service.exception.ValidacaoException;
+import Alura.ForumHub.infra.exception.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,16 +30,16 @@ public class PerfilService {
         var perfis = perfilRepository.findAllByAtivoTrue(paginacao)
                 .map(PerfilDetalhadoDTO::new);
         if (perfis.isEmpty()) {
-            throw new ValidacaoException("Nenhum perfil encontrado");
+            throw ExceptionUtil.notFound("Nenhum perfil encontrado");
         }
         return perfis;
     }
 
     public PerfilDetalhadoDTO detalhar(Long id) {
         var perfil = perfilRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
+                .orElseThrow(() -> ExceptionUtil.notFound("Perfil não encontrado"));
         if (!perfil.isAtivo()) {
-            throw new ValidacaoException("Perfil inativo");
+            throw ExceptionUtil.badRequest("Perfil inativo");
         }
         return new PerfilDetalhadoDTO(perfil);
     }
@@ -47,14 +47,14 @@ public class PerfilService {
     public PerfilDetalhadoDTO atualizar(PerfilAtualizarDTO dados) {
 
         var perfil = perfilRepository.findById(dados.id())
-                .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
+                .orElseThrow(() -> ExceptionUtil.notFound("Perfil não encontrado"));
 
         if (!perfil.isAtivo()) {
-            throw new ValidacaoException("Perfil inativo");
+            throw ExceptionUtil.badRequest("Perfil inativo");
         }
 
         if(perfilRepository.existsByNomeIgnoreCase(dados.nome())) {
-            throw new ValidacaoException("Já existe um perfil com esse nome");
+            throw ExceptionUtil.badRequest("Já existe um perfil com esse nome");
         }
 
         perfil.atualizarInformacoes(dados);

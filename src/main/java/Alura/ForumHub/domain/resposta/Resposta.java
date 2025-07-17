@@ -1,7 +1,11 @@
 package Alura.ForumHub.domain.resposta;
 
+import Alura.ForumHub.domain.resposta.dto.RespostaAtualizarDTO;
 import Alura.ForumHub.domain.resposta.dto.RespostaDTO;
+import Alura.ForumHub.domain.topico.Topico;
+import Alura.ForumHub.domain.usuario.Usuario;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,22 +26,34 @@ public class Resposta {
 
     private String mensagem;
 
-    @Column(name = "topico_id", nullable = false)
-    private Long idTopico;
+    @ManyToOne
+    @JoinColumn(name = "topico_id", nullable = false)
+    private Topico topico;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dataCriacao;
 
-    @Column(name = "autor_id", nullable = false)
-    private Long idAutor;
+    @ManyToOne
+    @JoinColumn(name = "autor_id", nullable = false)
+    private Usuario autor;
 
     private boolean solucao;
 
-    public Resposta(RespostaDTO dados) {
+    private boolean ativo;
+
+    public Resposta(RespostaDTO dados, Topico topico, Usuario usuario) {
         this.mensagem = dados.mensagem();
-        this.idTopico = dados.topicoId();
+        this.topico = topico;
         this.dataCriacao = LocalDateTime.now();
-        this.idAutor = dados.autorId();
+        this.autor = usuario;
         this.solucao = false;
+        this.ativo = true;
+    }
+
+    public void atualizarInformacoes(RespostaAtualizarDTO dados) {
+        this.mensagem = dados.mensagem();
+    }
+
+    public void excluir() {
+        this.ativo = false;
     }
 }

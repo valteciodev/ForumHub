@@ -18,9 +18,8 @@ public record RespostaDetalhadaDTO (
                     dados.getMensagem(),
                     dados.getDataCriacao(),
                     dados.isSolucao(),
-                    dados.getIdTopico(),
-                    dados.getIdAutor()
+                    dados.getTopico().getId(),
+                    dados.getAutor().getId()
             );
-
         }
 }

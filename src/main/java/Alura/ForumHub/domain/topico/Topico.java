@@ -28,7 +28,6 @@ public class Topico {
 
     private String mensagem;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dataCriacao;
 
     private boolean status;
