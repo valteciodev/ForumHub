@@ -4,6 +4,7 @@ import Alura.ForumHub.domain.curso.dto.CursoAtualizarDTO;
 import Alura.ForumHub.domain.curso.dto.CursoDTO;
 import Alura.ForumHub.service.CursoService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,7 +21,7 @@ public class CursoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody CursoDTO dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity cadastrar(@RequestBody @Valid CursoDTO dados, UriComponentsBuilder uriBuilder) {
         var dto = cursoService.cadastrar(dados);
         var uri = uriBuilder.path("/cursos/{id}").buildAndExpand(dto.id()).toUri();
 
@@ -40,12 +41,13 @@ public class CursoController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizar(@RequestBody CursoAtualizarDTO dados) {
+    public ResponseEntity atualizar(@RequestBody @Valid CursoAtualizarDTO dados) {
         var curso = cursoService.atualizar(dados);
         return ResponseEntity.ok(curso);
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity excluir(@PathVariable Long id) {
         cursoService.excluir(id);
         return ResponseEntity.noContent().build();

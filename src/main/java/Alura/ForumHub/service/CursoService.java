@@ -19,17 +19,24 @@ public class CursoService {
     private CursoRepository cursoRepository;
 
     public CursoDetalhadoDTO cadastrar(CursoDTO dados) {
+        if (cursoRepository.existsByNomeIgnoreCaseAndCategoriaAndAtivoTrue(dados.nome(), dados.categoria())) {
+            throw new ValidacaoException("Curso já cadastrado");
+        }
         var curso = new Curso(dados);
         cursoRepository.save(curso);
 
         // Converto Curso para CursoDetalhadoDTO
-        return new CursoDetalhadoDTO(curso.getId(), curso.getNome(), curso.getCategoria());
+        return new CursoDetalhadoDTO(curso);
     }
 
     public Page<CursoDetalhadoDTO> listar(Pageable paginacao) {
         // Busco todos os cursos e converto para CursoDetalhadoDTO
         var page = cursoRepository.findAllByAtivoTrue(paginacao)
-                .map(curso -> new CursoDetalhadoDTO(curso.getId(), curso.getNome(), curso.getCategoria()));
+                .map(CursoDetalhadoDTO::new);
+        // Verifico se a página está vazia
+        if (page.isEmpty()) {
+            throw new ValidacaoException("Nenhum curso encontrado");
+        }
         return page;
     }
 
@@ -39,15 +46,21 @@ public class CursoService {
         if (!curso.isAtivo()){
             throw new ValidacaoException("Curso inativo");
         }
-        return new CursoDetalhadoDTO(curso.getId(), curso.getNome(), curso.getCategoria());
+        return new CursoDetalhadoDTO(curso);
     }
 
     public CursoDetalhadoDTO atualizar(@Valid CursoAtualizarDTO dados) {
         var curso = cursoRepository.findById(dados.id()).orElseThrow(() -> new ValidacaoException("Curso não encontrado"));
-        curso.atualizarInformacoes(dados);
 
-        // Salvo as alterações no curso
-        cursoRepository.save(curso);
+        if (!curso.isAtivo()) {
+            throw new ValidacaoException("Curso inativo, não é possível atualizar");
+        }
+
+        if (cursoRepository.existsByNomeIgnoreCaseAndCategoriaAndAtivoTrueAndIdNot(dados.nome(), dados.categoria(), curso.getId())) {
+            throw new ValidacaoException("Curso já cadastrado");
+        }
+
+        curso.atualizarInformacoes(dados);
 
         return new CursoDetalhadoDTO(curso);
     }

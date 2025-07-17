@@ -1,0 +1,1 @@
+alter table perfis add id_usuario BIGINT NOT NULL;

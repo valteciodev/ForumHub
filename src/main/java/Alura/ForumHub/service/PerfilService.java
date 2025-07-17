@@ -17,11 +17,14 @@ public class PerfilService {
     @Autowired
     private PerfilRepository perfilRepository;
 
-    public PerfilDetalhadoDTO cadastrar(PerfilDTO dados) {
-        var perfil = new Perfil(dados);
-        perfilRepository.save(perfil);
-        return new PerfilDetalhadoDTO(perfil);
-    }
+//    public PerfilDetalhadoDTO cadastrar(PerfilDTO dados) {
+//        if(perfilRepository.existsByNomeIgnoreCase(dados.nome())) {
+//            throw new ValidacaoException("Já existe um perfil com esse nome");
+//        }
+//        var perfil = new Perfil(dados);
+//        perfilRepository.save(perfil);
+//        return new PerfilDetalhadoDTO(perfil);
+//    }
 
     public Page<PerfilDetalhadoDTO> listar(Pageable paginacao) {
         var perfis = perfilRepository.findAllByAtivoTrue(paginacao)
@@ -42,19 +45,29 @@ public class PerfilService {
     }
 
     public PerfilDetalhadoDTO atualizar(PerfilAtualizarDTO dados) {
+
         var perfil = perfilRepository.findById(dados.id())
                 .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
+
+        if (!perfil.isAtivo()) {
+            throw new ValidacaoException("Perfil inativo");
+        }
+
+        if(perfilRepository.existsByNomeIgnoreCase(dados.nome())) {
+            throw new ValidacaoException("Já existe um perfil com esse nome");
+        }
+
         perfil.atualizarInformacoes(dados);
         perfilRepository.save(perfil);
         return new PerfilDetalhadoDTO(perfil);
     }
 
-    public void excluir(Long id) {
-        var perfil = perfilRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
-        if (!perfil.isAtivo()) {
-            throw new ValidacaoException("Perfil já está inativo");
-        }
-        perfil.excluir();
-    }
+//    public void excluir(Long id) {
+//        var perfil = perfilRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
+//        if (!perfil.isAtivo()) {
+//            throw new ValidacaoException("Perfil já está excluído");
+//        }
+//        perfil.excluir();
+//    }
 }

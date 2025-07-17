@@ -1,8 +1,10 @@
 package Alura.ForumHub.controller;
 
+import Alura.ForumHub.domain.topico.dto.TopicoAtualizarDTO;
 import Alura.ForumHub.domain.topico.dto.TopicoDTO;
 import Alura.ForumHub.service.TopicoService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,7 +22,7 @@ public class TopicoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody TopicoDTO dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity cadastrar(@RequestBody @Valid TopicoDTO dados, UriComponentsBuilder uriBuilder) {
         var dto = topicoService.cadastrar(dados);
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(dto.id()).toUri();
 
@@ -30,14 +32,27 @@ public class TopicoController {
 
     @GetMapping
     public ResponseEntity listar(@PageableDefault (size = 10, page = 0, sort = "dataCriacao", direction = Sort.Direction.ASC) Pageable paginacao) {
-        var topicos = topicoService.listar(paginacao);
-        return ResponseEntity.ok(topicos);
+        return ResponseEntity.ok(topicoService.listar(paginacao));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity detalhar(@PathVariable Long id) {
         var topico = topicoService.detalhar(id);
         return ResponseEntity.ok(topico);
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody @Valid TopicoAtualizarDTO dados) {
+        var topico = topicoService.atualizar(dados);
+        return ResponseEntity.ok(topico);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id) {
+        topicoService.excluir(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

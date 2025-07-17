@@ -1,18 +1,16 @@
 package Alura.ForumHub.domain.resposta.dto;
 
 import Alura.ForumHub.domain.resposta.Resposta;
-import Alura.ForumHub.domain.topico.dto.TopicoDetalhadoDTO;
-import Alura.ForumHub.domain.usuario.dto.UsuarioDetalhadoDTO;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public record RespostaDetalhadaDTO (
         Long id,
         String mensagem,
-        Date dataCriacao,
+        LocalDateTime dataCriacao,
         boolean solucao,
-        Long topico_id,
-        UsuarioDetalhadoDTO autor
+        Long idTopico,
+        Long idAutor
         ) {
         public RespostaDetalhadaDTO(Resposta dados) {
             this(
@@ -20,8 +18,8 @@ public record RespostaDetalhadaDTO (
                     dados.getMensagem(),
                     dados.getDataCriacao(),
                     dados.isSolucao(),
-                    dados.getTopico().getId(),
-                    new UsuarioDetalhadoDTO(dados.getAutor())
+                    dados.getIdTopico(),
+                    dados.getIdAutor()
             );
 
         }

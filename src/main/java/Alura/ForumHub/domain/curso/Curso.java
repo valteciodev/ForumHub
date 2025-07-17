@@ -30,12 +30,8 @@
         }
 
         public void atualizarInformacoes(CursoAtualizarDTO dados) {
-            if (dados.nome() != null) {
-                this.nome = dados.nome();
-            }
-            if (dados.categoria() != null) {
-                this.categoria = dados.categoria();
-            }
+            this.nome = dados.nome();
+            this.categoria = dados.categoria();
         }
 
         public void excluir() {

@@ -28,9 +28,11 @@ public record TopicoDetalhadoDTO(
                 dados.isStatus(),
                 dados.getAutor(),
                 dados.getCurso(),
-                dados.getRespostas().stream()
-                        .map(RespostaDetalhadaDTO::new)
-                        .toList()
+                dados.getRespostas() == null
+                ? List.of()
+                : dados.getRespostas().stream()
+                .map(RespostaDetalhadaDTO::new)
+                .toList()
         );
     }
 }

@@ -22,9 +22,12 @@ public class Perfil {
 
     private boolean ativo;
 
-    public Perfil(PerfilDTO dados) {
+    private Long idUsuario;
+
+    public Perfil(PerfilDTO dados, Long idUsuario) {
         this.nome = dados.nome();
         this.ativo = true;
+        this.idUsuario = idUsuario;
     }
 
     public void atualizarInformacoes(PerfilAtualizarDTO dados) {

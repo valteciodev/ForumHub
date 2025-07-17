@@ -2,6 +2,7 @@ package Alura.ForumHub.domain.topico;
 
 import Alura.ForumHub.domain.curso.Curso;
 import Alura.ForumHub.domain.resposta.Resposta;
+import Alura.ForumHub.domain.topico.dto.TopicoAtualizarDTO;
 import Alura.ForumHub.domain.topico.dto.TopicoDTO;
 import Alura.ForumHub.domain.usuario.Usuario;
 import jakarta.persistence.*;
@@ -52,5 +53,15 @@ public class Topico {
         this.status = true; // Por padrão, o tópico é criado com status 'true'
         this.autor = usuario;
         this.curso = curso;
+    }
+
+    public void atualizarInformacoes(TopicoAtualizarDTO dados, Curso curso) {
+        this.titulo = dados.titulo();
+        this.mensagem = dados.mensagem();
+        this.curso = curso;
+    }
+
+    public void excluir() {
+        this.ativo = false;
     }
 }

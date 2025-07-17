@@ -1,6 +1,7 @@
 package Alura.ForumHub.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -58,6 +59,11 @@ public class TratadorDeErros {
     @ExceptionHandler(Exception.class)
     public ResponseEntity tratarErro500(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " +ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity tratarErroIntegridade(DataIntegrityViolationException ex) {
+        return ResponseEntity.badRequest().body("Erro de conexão com o banco    .");
     }
 
     // (classe recorde interna) Personalizar o retorno do erro 400 *erro na validação de algum dado)

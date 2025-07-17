@@ -11,8 +11,7 @@ public record RespostaDTO(
         Long topicoId,
 
         @NotNull(message = "O ID do autor é obrigatório")
-        Long autorId,
+        Long autorId
 
-        boolean solucao
         ) {
 }
