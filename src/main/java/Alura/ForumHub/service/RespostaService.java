@@ -10,6 +10,7 @@ import Alura.ForumHub.repository.RespostaRepository;
 import Alura.ForumHub.repository.TopicoRepository;
 import Alura.ForumHub.repository.UsuarioRepository;
 import Alura.ForumHub.infra.exception.ExceptionUtil;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,7 @@ public class RespostaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Transactional
     public RespostaDetalhadaDTO cadastrar( RespostaDTO dados) {
         var topico = validarTopico(dados.topicoId());
         var usuario = validarUsuario(dados.autorId());
@@ -60,6 +62,7 @@ public class RespostaService {
         return new RespostaDetalhadaDTO(resposta);
     }
 
+    @Transactional
     public RespostaDetalhadaDTO atualizar(@Valid RespostaAtualizarDTO dados) {
         var resposta = respostaRepository.findById(dados.id())
             .orElseThrow(() -> ExceptionUtil.notFound("Resposta não encontrada"));
@@ -89,6 +92,19 @@ public class RespostaService {
         return new RespostaDetalhadaDTO(resposta);
     }
 
+    @Transactional
+    public void excluir(Long id) {
+        var resposta = respostaRepository.findById(id)
+                .orElseThrow(() -> ExceptionUtil.notFound("Resposta não encontrada"));
+
+        if (!resposta.isAtivo()) {
+            throw ExceptionUtil.badRequest("Resposta já está inativa");
+        }
+
+        resposta.excluir();
+        respostaRepository.save(resposta);
+    }
+
     private Usuario validarUsuario(Long usuarioId) {
         var usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> ExceptionUtil.notFound("Usuário não encontrado"));
@@ -107,17 +123,5 @@ public class RespostaService {
         }
 
         return topico;
-    }
-
-    public void excluir(Long id) {
-        var resposta = respostaRepository.findById(id)
-                .orElseThrow(() -> ExceptionUtil.notFound("Resposta não encontrada"));
-
-        if (!resposta.isAtivo()) {
-            throw ExceptionUtil.badRequest("Resposta já está inativa");
-        }
-
-        resposta.excluir();
-        respostaRepository.save(resposta);
     }
 }

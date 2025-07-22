@@ -10,9 +10,11 @@ import Alura.ForumHub.infra.exception.ExceptionUtil;
 import Alura.ForumHub.repository.CursoRepository;
 import Alura.ForumHub.repository.TopicoRepository;
 import Alura.ForumHub.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +29,7 @@ public class TopicoService {
     @Autowired
     private CursoRepository cursoRepository;
 
+    @Transactional
     public TopicoDetalhadoDTO cadastrar(TopicoDTO dados) {
         var usuario = validarUsuario(dados.autorId());
         var curso = validarCurso(dados.cursoId());
@@ -41,7 +44,7 @@ public class TopicoService {
         return new TopicoDetalhadoDTO(topico);
     }
 
-    public Page<TopicoDetalhadoDTO> listar(Pageable paginacao) {
+    public Page<TopicoDetalhadoDTO> listar(@PageableDefault Pageable paginacao) {
         var topicos = topicoRepository.findAllByAtivoTrue(paginacao)
                 .map(TopicoDetalhadoDTO::new);
         if (topicos.isEmpty()) {
@@ -59,6 +62,7 @@ public class TopicoService {
         return new TopicoDetalhadoDTO(topico);
     }
 
+    @Transactional
     public TopicoDetalhadoDTO atualizar(TopicoAtualizarDTO dados) {
         var topico = topicoRepository.findById(dados.id())
                 .orElseThrow(() -> ExceptionUtil.notFound("Tópico não encontrado"));
@@ -76,6 +80,7 @@ public class TopicoService {
         return new TopicoDetalhadoDTO(topico);
     }
 
+    @Transactional
     public void excluir(Long id) {
         var topico = topicoRepository.findById(id)
                 .orElseThrow(() -> ExceptionUtil.notFound("Tópico não encontrado"));

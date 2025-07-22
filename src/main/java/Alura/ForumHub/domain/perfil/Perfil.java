@@ -1,7 +1,6 @@
 package Alura.ForumHub.domain.perfil;
 
 import Alura.ForumHub.domain.perfil.dto.PerfilAtualizarDTO;
-import Alura.ForumHub.domain.perfil.dto.PerfilDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,8 +23,8 @@ public class Perfil {
 
     private Long idUsuario;
 
-    public Perfil(PerfilDTO dados, Long idUsuario) {
-        this.nome = dados.nome();
+    public Perfil(String nome, Long idUsuario) {
+        this.nome = nome;
         this.ativo = true;
         this.idUsuario = idUsuario;
     }

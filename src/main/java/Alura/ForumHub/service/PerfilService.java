@@ -1,11 +1,10 @@
 package Alura.ForumHub.service;
 
-import Alura.ForumHub.domain.perfil.Perfil;
 import Alura.ForumHub.domain.perfil.dto.PerfilAtualizarDTO;
-import Alura.ForumHub.domain.perfil.dto.PerfilDTO;
 import Alura.ForumHub.domain.perfil.dto.PerfilDetalhadoDTO;
 import Alura.ForumHub.repository.PerfilRepository;
 import Alura.ForumHub.infra.exception.ExceptionUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,15 +15,6 @@ public class PerfilService {
 
     @Autowired
     private PerfilRepository perfilRepository;
-
-//    public PerfilDetalhadoDTO cadastrar(PerfilDTO dados) {
-//        if(perfilRepository.existsByNomeIgnoreCase(dados.nome())) {
-//            throw new ValidacaoException("Já existe um perfil com esse nome");
-//        }
-//        var perfil = new Perfil(dados);
-//        perfilRepository.save(perfil);
-//        return new PerfilDetalhadoDTO(perfil);
-//    }
 
     public Page<PerfilDetalhadoDTO> listar(Pageable paginacao) {
         var perfis = perfilRepository.findAllByAtivoTrue(paginacao)
@@ -44,6 +34,7 @@ public class PerfilService {
         return new PerfilDetalhadoDTO(perfil);
     }
 
+    @Transactional
     public PerfilDetalhadoDTO atualizar(PerfilAtualizarDTO dados) {
 
         var perfil = perfilRepository.findById(dados.id())
@@ -53,21 +44,12 @@ public class PerfilService {
             throw ExceptionUtil.badRequest("Perfil inativo");
         }
 
-        if(perfilRepository.existsByNomeIgnoreCase(dados.nome())) {
+        if(perfilRepository.existsByNomeIgnoreCaseAndIdNot(dados.nome(), perfil.getId())) {
             throw ExceptionUtil.badRequest("Já existe um perfil com esse nome");
         }
 
         perfil.atualizarInformacoes(dados);
-        perfilRepository.save(perfil);
         return new PerfilDetalhadoDTO(perfil);
     }
 
-//    public void excluir(Long id) {
-//        var perfil = perfilRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
-//        if (!perfil.isAtivo()) {
-//            throw new ValidacaoException("Perfil já está excluído");
-//        }
-//        perfil.excluir();
-//    }
 }

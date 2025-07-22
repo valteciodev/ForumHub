@@ -1,11 +1,14 @@
 package Alura.ForumHub.domain.usuario.dto;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UsuarioDTO(
+public record UsuarioAtualizarDTO(
+
+        @NotNull(message = "O ID é obrigatório")
+        Long id,
+
         @NotBlank(message = "O nome é obrigatório")
         String nome,
 
@@ -14,9 +17,6 @@ public record UsuarioDTO(
         String email,
 
         @NotBlank(message = "A senha é obrigatória")
-        String senha,
-
-        @NotBlank(message = "O perfil é obrigatório")
-        String nomePerfil
+        String senha
         ) {
 }

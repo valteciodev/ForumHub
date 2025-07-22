@@ -3,7 +3,7 @@ package Alura.ForumHub.controller;
 import Alura.ForumHub.domain.topico.dto.TopicoAtualizarDTO;
 import Alura.ForumHub.domain.topico.dto.TopicoDTO;
 import Alura.ForumHub.service.TopicoService;
-import jakarta.transaction.Transactional;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -15,13 +15,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/topicos")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
     @Autowired
     private TopicoService topicoService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid TopicoDTO dados, UriComponentsBuilder uriBuilder) {
         var dto = topicoService.cadastrar(dados);
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(dto.id()).toUri();
@@ -42,14 +42,12 @@ public class TopicoController {
     }
 
     @PutMapping
-    @Transactional
     public ResponseEntity atualizar(@RequestBody @Valid TopicoAtualizarDTO dados) {
         var topico = topicoService.atualizar(dados);
         return ResponseEntity.ok(topico);
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity excluir(@PathVariable Long id) {
         topicoService.excluir(id);
         return ResponseEntity.noContent().build();

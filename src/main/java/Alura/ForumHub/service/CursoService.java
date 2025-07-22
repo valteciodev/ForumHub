@@ -6,6 +6,7 @@ import Alura.ForumHub.domain.curso.dto.CursoDTO;
 import Alura.ForumHub.domain.curso.dto.CursoDetalhadoDTO;
 import Alura.ForumHub.repository.CursoRepository;
 import Alura.ForumHub.infra.exception.ExceptionUtil;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ public class CursoService {
     @Autowired
     private CursoRepository cursoRepository;
 
+    @Transactional
     public CursoDetalhadoDTO cadastrar(CursoDTO dados) {
         if (cursoRepository.existsByNomeIgnoreCaseAndCategoriaAndAtivoTrue(dados.nome(), dados.categoria())) {
             throw ExceptionUtil.badRequest("Curso já cadastrado");
@@ -47,6 +49,7 @@ public class CursoService {
         return new CursoDetalhadoDTO(curso);
     }
 
+    @Transactional
     public CursoDetalhadoDTO atualizar(@Valid CursoAtualizarDTO dados) {
         var curso = cursoRepository.findById(dados.id()).orElseThrow(() -> ExceptionUtil.notFound("Curso não encontrado"));
 
@@ -63,6 +66,7 @@ public class CursoService {
         return new CursoDetalhadoDTO(curso);
     }
 
+    @Transactional
     public void excluir(Long id) {
         var curso = cursoRepository.findById(id).orElseThrow(() -> ExceptionUtil.notFound("Curso não encontrado"));
         if (!curso.isAtivo()) {

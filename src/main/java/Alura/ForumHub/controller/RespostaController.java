@@ -3,24 +3,23 @@ package Alura.ForumHub.controller;
 import Alura.ForumHub.domain.resposta.dto.RespostaAtualizarDTO;
 import Alura.ForumHub.domain.resposta.dto.RespostaDTO;
 import Alura.ForumHub.service.RespostaService;
-import jakarta.transaction.Transactional;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/respostas")
+@SecurityRequirement(name = "bearer-key")
 public class RespostaController {
 
     @Autowired
     private RespostaService respostaService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid RespostaDTO dados, UriComponentsBuilder uriBuilder) {
         var resposta = respostaService.cadastrar(dados);
 
@@ -40,14 +39,12 @@ public class RespostaController {
     }
 
     @PutMapping
-    @Transactional
     public ResponseEntity atualizar(@RequestBody @Valid RespostaAtualizarDTO dados) {
         var resposta = respostaService.atualizar(dados);
         return ResponseEntity.ok(resposta);
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity excluir(@PathVariable Long id) {
         respostaService.excluir(id);
         return ResponseEntity.noContent().build();

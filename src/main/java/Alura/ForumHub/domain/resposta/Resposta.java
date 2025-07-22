@@ -4,6 +4,7 @@ import Alura.ForumHub.domain.resposta.dto.RespostaAtualizarDTO;
 import Alura.ForumHub.domain.resposta.dto.RespostaDTO;
 import Alura.ForumHub.domain.topico.Topico;
 import Alura.ForumHub.domain.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

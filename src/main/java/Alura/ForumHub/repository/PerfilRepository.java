@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface PerfilRepository extends JpaRepository<Perfil, Long> {
     Page<Perfil> findAllByAtivoTrue(Pageable paginacao);
     boolean existsByNomeIgnoreCase(String nome);
+    boolean existsByNomeIgnoreCaseAndIdNot(String nome, Long id);
 }

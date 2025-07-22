@@ -1,9 +1,11 @@
 package Alura.ForumHub.domain.topico.dto;
 
 import Alura.ForumHub.domain.curso.Curso;
+import Alura.ForumHub.domain.curso.dto.CursoDetalhadoDTO;
 import Alura.ForumHub.domain.resposta.dto.RespostaDetalhadaDTO;
 import Alura.ForumHub.domain.topico.Topico;
 import Alura.ForumHub.domain.usuario.Usuario;
+import Alura.ForumHub.domain.usuario.dto.UsuarioDetalhadoDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,8 +16,8 @@ public record TopicoDetalhadoDTO(
         String mensagem,
         LocalDateTime dataCriacao,
         boolean status,
-        Usuario autor,
-        Curso curso,
+        UsuarioDetalhadoDTO autor,
+        CursoDetalhadoDTO curso,
         List<RespostaDetalhadaDTO> respostas
 
 ) {
@@ -26,8 +28,8 @@ public record TopicoDetalhadoDTO(
                 dados.getMensagem(),
                 dados.getDataCriacao(),
                 dados.isStatus(),
-                dados.getAutor(),
-                dados.getCurso(),
+                new UsuarioDetalhadoDTO(dados.getAutor()),
+                new CursoDetalhadoDTO(dados.getCurso()),
                 dados.getRespostas() == null
                 ? List.of()
                 : dados.getRespostas().stream()

@@ -7,9 +7,9 @@ public record UsuarioDetalhadoDTO(
         Long id,
         String nome,
         String email,
-        PerfilDetalhadoDTO perfil
+        String perfil
         ) {
         public UsuarioDetalhadoDTO(Usuario autor) {
-            this(autor.getId(), autor.getNome(), autor.getEmail(), new PerfilDetalhadoDTO(autor.getPerfil()));
+            this(autor.getId(), autor.getNome(), autor.getEmail(), autor.getPerfil().getNome());
         }
 }
